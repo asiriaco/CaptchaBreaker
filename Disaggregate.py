@@ -7,9 +7,9 @@ files = glob.glob("ProcessedImages/*")
 for file in files:
     img = cv2.imread(file)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    _, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV)
+    _, newimg = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV)
 
-    edges, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    edges, _ = cv2.findContours(newimg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     regions = []
 
     for edge in edges:
