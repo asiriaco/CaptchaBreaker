@@ -2,13 +2,15 @@ from keras.models import load_model
 from helpers import resize_to_fit
 from imutils import paths
 import numpy as np
-import os
+import pandas as pd
 import cv2
 import pickle
 from CaptchaProcessor import process
 
 
 def BreakCaptcha():
+
+    Captchas = []
 
     with open("labelModels.dat", "rb") as Translator:
         lb = pickle.load(Translator)
@@ -54,10 +56,14 @@ def BreakCaptcha():
             cv2.rectangle(FinalImage, (x - 2, y - 2), (x + width + 2, y + height + 2), (0, 0, 255), 1)
 
         expectedCaptcha = "".join(forecast)
-        print(expectedCaptcha)
-
-
+        Captchas.append(expectedCaptcha)
+       # print(expectedCaptcha)
+    return Captchas
 
 if __name__ == "__main__":
-    BreakCaptcha()
 
+    captchas = BreakCaptcha()
+    df = pd.DataFrame(captchas)
+    print (df)
+    df.columns = ["Captcha"]
+    df.to_csv("Captchas.csv", index=False)
